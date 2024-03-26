@@ -18,9 +18,9 @@ class LinkedListBasic:
             print("index", i, ": out of bound in insert()")
 
     def append(self, newItem) :
-        prev = self.getNode(self.__numItems - 1)
-        newNode = ListNode(newItem, prev.next)
-        prev.next = newNode
+        newNode = ListNode(newItem, self.__head)
+        self.__tail.next = newNode
+        self.__tail = newNode
         self.__numItems += 1
 
     # i번째 원소 삭제
@@ -33,6 +33,8 @@ class LinkedListBasic:
             curr = prev.next
             prev.next = curr.next
             retItem = curr.item
+            if curr == self.__tail :
+                self.__tail == prev
             self.__numItems -= 1
             return retItem
         else:
@@ -43,6 +45,8 @@ class LinkedListBasic:
         (prev, curr) = self.findNode(x)
         if curr != None:
             prev.next = curr.next
+            if curr == self.__tail :
+                self.__tail = prev
             self.__numItems -= 1
             return x
         else :
@@ -118,7 +122,7 @@ class LinkedListBasic:
     def findNode(self,x) :
         prev = self.__head
         curr = prev.next
-        while curr != None :
+        while curr != self.__head :
             if curr.item == x :
                 return (prev,curr)
             else :

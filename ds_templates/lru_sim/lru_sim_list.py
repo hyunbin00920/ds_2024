@@ -23,10 +23,9 @@ class CacheSimulator:
 
     def print_stats(self):
         hit_ratio = self.cache_hit / self.tot_cnt
-        print("cache_slot = ", self.cache_slots, "cache_hit = ", self.cache_hit, "hit ratio = {:.5f}".format(hit_ratio))
+        print("cache_slot = ", self.cache_slots, "cache_hit = ", self.cache_hit, "hit ratio = {}".format(hit_ratio))
 
 if __name__ == "__main__":
-    print("\n")    
     data_file = open("./linkbench.trc")
     lines = data_file.readlines()
     for cache_slots in range(100, 1001, 100):
