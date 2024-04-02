@@ -102,6 +102,7 @@ int main() {
         initList(cache);
 
         fp = fopen("./linkbench.trc", "r");
+        // fp = fopen("ds_2024/ds_templates/lru_sim/linkbench.trc", "r");
 
         while (fscanf(fp, "%d", &page) == 1) {
             do_sim(cache, page, &cache_hit, &tot_cnt, cache_slots);
