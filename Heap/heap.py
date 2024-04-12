@@ -1,3 +1,8 @@
+class Node :
+    def __init__ (self,lpn,freq) :
+        self.lpn = lpn
+        self.freq = freq
+
 class Heap :
     def __init__(self, *args) :
         if len(args) != 0 :
