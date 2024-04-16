@@ -1,4 +1,4 @@
-from lpn_node import *
+from Heap.lpn_node import *
 
 class Heap_node :
 	def __init__(self, *args) :
