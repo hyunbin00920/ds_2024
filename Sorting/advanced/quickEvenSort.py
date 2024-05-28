@@ -1,3 +1,5 @@
+import random
+
 def quickEvenSort(A, p:int, r:int) :
     if p < r :
         q = partition(A, p, r)
@@ -5,6 +7,9 @@ def quickEvenSort(A, p:int, r:int) :
         quickEvenSort(A, q+1, r)
 
 def partition(A, p:int, r:int) -> int :
+    random_element = random.randint(p,r)
+    A[random_element], A[r] = A[r], A[random_element]
+
     x = A[r]
     i = p - 1
     flag = 0
@@ -22,3 +27,6 @@ def partition(A, p:int, r:int) -> int :
 
     A[i+1], A[r] = A[r], A[i+1]
     return i+1
+
+
+
