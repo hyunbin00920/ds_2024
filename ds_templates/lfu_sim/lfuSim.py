@@ -29,17 +29,16 @@ class CacheSimulator :
       # The data has been Updated before
         if lpn in self.freq_dic :
           self.freq_dic[lpn] += 1
-          self.cache.insert(Node(lpn, self.freq_dic[lpn]))
-
+          
       # The data has not been Updated before
         else :
           self.freq_dic[lpn] = 1
-          self.cache.insert(Node(lpn,self.freq_dic[lpn]))
 
     # Cache is not full (then it must not been Updated before)
       else :
         self.freq_dic[lpn] = 1
-        self.cache.insert(Node(lpn,self.freq_dic[lpn]))
+
+      self.cache.insert(Node(lpn,self.freq_dic[lpn]))
     
     self.tot_cnt += 1
 
