@@ -1,0 +1,12 @@
+일련번호 0~99999
+
+명령어
+a : 할당
+f : 해제
+
+메모리 크기 16KB
+
+total alloc  memory = 204199139
+total free   memory = 34134740
+total in-use memory = 170064399
+
