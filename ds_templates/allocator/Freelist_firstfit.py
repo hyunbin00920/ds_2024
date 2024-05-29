@@ -1,22 +1,30 @@
 from Node import FreeListNode
 
 class FreeList_firstfit :
+    # Circular Doubly Linked List
     def __init__(self) :
-        self.__head = FreeListNode(0, 0, None, None)
-        self.__head.prev = self.__head
-        self.__head.next = self.__head
+        self.head = FreeListNode(0, 0, None, None)
+        self.head.prev = self.head
+        self.head.next = self.head
         self.__numItems = 0
 
+    # Get Node with index
     def getNode(self, i:int) -> FreeListNode :
-        curr = self.__head
-        for index in range(i + 1) :
+        if i == -1 :
+            i = self.__numItems - 1
+        curr = self.head.next
+        for index in range(i) :
             curr = curr.next
+        # print(f"GETNODE {i}: ({curr.base}, {curr.bound})")
         return curr
 
     # Insert new FreeListNode at index i
     def insert(self, i:int, newbase, newbound) -> None :
         if (i >= 0 and i <= self.__numItems) :
-            prev = self.getNode(i - 1)
+            if i == 0 :
+                prev = self.head
+            else :
+                prev = self.getNode(i-1)
             newNode = FreeListNode(newbase, newbound, prev, prev.next)
             newNode.next.prev = newNode
             prev.next = newNode
@@ -26,10 +34,10 @@ class FreeList_firstfit :
 
     # Append new FreeListNode at last of list
     def append(self, newbase, newbound) -> None :
-        prev = self.__head.prev
-        newNode = FreeListNode(newbase, newbound, prev, self.__head)
+        prev = self.head.prev
+        newNode = FreeListNode(newbase, newbound, prev, self.head)
         prev.next = newNode
-        self.__head.prev = newNode
+        self.head.prev = newNode
         self.__numItems += 1
 
     # Change node's info with index
@@ -47,9 +55,9 @@ class FreeList_firstfit :
 
     # Finding index for Node with base 
     def find_index(self, base) : 
-        index = 1
+        index = 0
         curr = self.getNode(index)
-        while (curr != self.__head and curr.base < base) :
+        while (curr != self.head and curr.base <= base) :
             curr = curr.next
             index += 1    
         return index
@@ -59,7 +67,7 @@ class FreeList_firstfit :
         currNode = self.getNode(index)
         prevNode = currNode.prev; nextNode = currNode.next
         # If the Node can Merge with previous Node
-        if (prevNode.base + prevNode.bound == currNode.base and prevNode != self.__head):
+        if (prevNode.base + prevNode.bound == currNode.base and prevNode != self.head):
             currNode.base = prevNode.base
             currNode.bound += prevNode.bound
             prevNode.prev.next = currNode
@@ -81,6 +89,14 @@ class FreeList_firstfit :
         curr.next.prev = curr.prev
         self.__numItems -= 1
 
+    # Chunk allocation
+    def chunk_allocation(self, csize, ccnt) :
+        temp = self.getNode(-1) 
+        if ((temp.base + temp.bound) % csize) == 0 :
+            self.change_info(-1, 0, csize)
+        else :
+            self.append(csize * (ccnt-1), csize)
+
     # Chunk_deallocation
     def chunk_deallocation(self, Node:FreeListNode, csize, ccnt) :
         for i in range(1, ccnt) :
@@ -91,38 +107,28 @@ class FreeList_firstfit :
                 else :                                                              # If not
                     Node.bound -= csize
                     Node = Node.next
-                    while Node != self.__head :                                 # Changing info behind the Node
+                    while Node != self.head :                                 # Changing info behind the Node
                         Node.base -= csize; Node.bound -= csize
                         Node = Node.next
                     break
             else :
                 continue 
 
+    # (ETC) Debugging function
     def print_list(self) :
-        curr = self.__head.next
-        while curr != self.__head :
-            print("(", curr.base, ",", curr.bound, ")")
+        print(" PRINT LIST ")
+        curr = self.head.next
+        index = 0
+        while curr != self.head :
+            print(f"index {index} = ({curr.base}, {curr.bound})")
+            index += 1
             curr = curr.next
-
+            
     def print_list_to_file(self, file) :
-        curr = self.__head.next
-        while curr != self.__head:
+        curr = self.head.next
+        while curr != self.head:
             file.write(f"({curr.base}, {curr.bound})\n")
             curr = curr.next
 
-    def __iter__(self) :
-        return FreeListIterator(self)
-    
-class FreeListIterator :
-    def __init__(self, alist) :
-        self.__head = alist.getNode(-1)
-        self.iterPosition = self.__head.next
-    def __next__(self) :
-        if self.iterPosition == self.__head :
-            raise StopIteration
-        else :
-            rtnval = (self.iterPosition.base, self.iterPosition.bound)
-            self.iterPosition = self.iterPosition.next
-            return rtnval
 
     
